@@ -1,17 +1,18 @@
 from chess.lib import *
+from menus.table import TABLE
+from datetime import datetime
 
 
 def main(win, player, load, movestr=""):
     start(win, load)
-
     moves = movestr.split()
     side, board, flags = convertMoves(moves)
-
     clock = pygame.time.Clock()
     sel = prevsel = [0, 0]
     while True:
         clock.tick(25)
         end = isEnd(side, board, flags)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT and prompt(win):
                 return 0
@@ -50,8 +51,7 @@ def main(win, player, load, movestr=""):
                         moves = undo(moves, 2) if side == player else undo(moves)
                         side, board, flags = convertMoves(moves)
 
-        showScreen(win, side, board, flags, sel, load, player)
-
+        showScreen(win, side, board, flags, sel, load, player, moves=len(moves))
         end = isEnd(side, board, flags)
         if side != player and not end:
             fro, to = miniMax(side, board, flags)

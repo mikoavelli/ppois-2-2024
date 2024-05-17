@@ -1,8 +1,11 @@
 import os.path
+from datetime import datetime
+
 import pygame
+import json
 
 pygame.font.init()
-FONT = os.path.join("res", "Asimov.otf")
+FONT = os.path.join("res", "font.otf")
 
 head = pygame.font.Font(FONT, 80)
 large = pygame.font.Font(FONT, 50)
@@ -64,9 +67,7 @@ def splitstr(string, index=57):
 
 
 PSPRITE = pygame.image.load(os.path.join("res", "img", "piecesprite.png"))
-
-# Load global image for back
-BACK = pygame.image.load(os.path.join("res", "img", "back.png"))
+BACK = pygame.image.load(os.path.join("res", "img", "backb.png"))
 
 
 class CHESS:
@@ -155,12 +156,14 @@ class MAIN:
     LOAD = medium.render("Load Game", True, WHITE)
     RULES = medium.render("Rules", True, WHITE)
     PREF = medium.render("Preferences", True, WHITE)
+    TABLE = medium.render("Record Table", True, WHITE)
 
     SINGLE_H = medium.render("SinglePlayer", True, GREY)
     MULTI_H = medium.render("MultiPlayer", True, GREY)
     LOAD_H = medium.render("Load Game", True, GREY)
     RULES_H = medium.render("Rules", True, GREY)
     PREF_H = medium.render("Preferences", True, GREY)
+    TABLE_H = medium.render("Record Table", True, GREY)
 
 
 class PREF:
@@ -169,7 +172,6 @@ class PREF:
     SOUNDS = medium.render("Sounds", True, WHITE)
     FLIP = medium.render("Flip screen", True, WHITE)
     CLOCK = medium.render("Show Clock", True, WHITE)
-    # SLIDESHOW = medium.render("Slideshow", True, WHITE)
     MOVE = medium.render("Moves", True, WHITE)
     UNDO = medium.render("Allow undo", True, WHITE)
 
@@ -204,6 +206,28 @@ class RULES:
 
     with open(os.path.join("res", "texts", "rules.txt"), "r") as f:
         TEXT = [vsmall.render(i, True, WHITE) for i in f.read().splitlines()]
+
+
+class TABLE:
+    HEAD = large.render("Record Table", True, WHITE)
+
+    PROMPT = vsmall.render("New Record!", True, WHITE)
+
+    with open(os.path.join("res", "record_table.json"), "r") as f:
+        records = json.load(f)
+        TEXT = [small.render(str(i[0] + ': ' + str(i[1])), True, WHITE) for i in records.items()]
+
+    def __init__(self):
+        self.DEFAULTTABLE = None
+        self.load_table()
+
+    def load_table(self):
+        with open(os.path.join("res", "record_table.json"), "r") as f:
+            self.DEFAULTTABLE = json.load(f)
+
+    def save(self, load):
+        with open(os.path.join("res", "record_table.json"), "w") as f:
+            json.dump(load, f, indent=2)
 
 
 class TIMER:

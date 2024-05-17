@@ -10,7 +10,6 @@ def convertPieces(win):
             CHESS.PIECES[i][key] = val.convert_alpha(win)
 
 
-
 def getChoice(win, side):
     """
     This function displays the choice menu when called, taking user input.
@@ -86,7 +85,6 @@ def drawBoard(win):
                 pygame.draw.rect(win, (235, 226, 208), (50 * x, 50 * y, 50, 50))
 
 
-
 def drawPieces(win, board, flip):
     """This function draws all pieces onto the board"""
     for side in range(2):
@@ -137,7 +135,6 @@ def prompt(win, msg=None):
                         return True
                     elif 300 < event.pos[0] < 350:
                         return False
-
 
 
 def start(win, load):

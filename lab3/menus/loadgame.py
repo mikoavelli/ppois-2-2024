@@ -1,9 +1,18 @@
+'''
+This file is a part of My-PyChess application.
+In this file, we manage the loadgame menu which is called when user clicks
+loadgame button on main menu.
+
+We also define functions to save, load and scan for games.
+'''
+
 import os
 import pygame
 from tools.loader import LOADGAME, BACK, putLargeNum, putDT
 from tools.utils import rounded_rect
 
 
+# This function scans for saved games
 def scan():
     for i in range(20):
         pth = os.path.join("res", "savedGames", "game" + str(i) + ".txt")
@@ -13,12 +22,14 @@ def scan():
             yield (i, data[0].split(" ")[0], data[1])
 
 
+# This function deletes a game.
 def delGame(gameId):
     name = os.path.join("res", "savedGames", "game" + str(gameId) + ".txt")
     if os.path.exists(name):
         os.remove(name)
 
 
+# This function loads the game, returns the neccessary data
 def loadGame(gameId):
     name = os.path.join("res", "savedGames", "game" + str(gameId) + ".txt")
     if os.path.exists(name):
@@ -41,11 +52,12 @@ def loadGame(gameId):
 
         else:
             temp = lines[0].strip().split()
-            return [temp[0]] + list(map(int, temp[1:])) + [lines[2]]
+            return [temp[0]] + [1 if len(lines[2].strip()) % 2 == 0 else 0] + list(map(int, temp[1:])) + [lines[2]]
     else:
         return None
 
 
+# This prompts the user comfirmation while user deletes a game
 def prompt(win):
     rounded_rect(win, (255, 255, 255), (110, 160, 280, 130), 10, 4)
 
@@ -68,6 +80,7 @@ def prompt(win):
                         return False
 
 
+# This function shows the screen
 def showScreen(win, pg, scanned):
     win.fill((0, 0, 0))
     rounded_rect(win, (255, 255, 255), (70, 15, 340, 60), 15, 4)
@@ -114,6 +127,7 @@ def showScreen(win, pg, scanned):
     pygame.display.update()
 
 
+# This is the main function, called by the main menu
 def main(win):
     scanned = tuple(scan())
     pages = (len(scanned) - 1) // 5

@@ -23,6 +23,7 @@ mult = (280, 200, 200, 40)
 load = (280, 260, 120, 40)
 pref = (265, 320, 210, 40)
 rules = (380, 380, 120, 40)
+table = (260, 440, 220, 40)
 
 
 def showMain(prefs):
@@ -34,6 +35,7 @@ def showMain(prefs):
     win.blit(MAIN.LOAD, load[:2])
     win.blit(MAIN.PREF, pref[:2])
     win.blit(MAIN.RULES, rules[:2])
+    win.blit(MAIN.TABLE, table[:2])
 
 
 cnt = 0
@@ -64,6 +66,9 @@ while run:
 
     if rules[0] < x < sum(rules[::2]) and rules[1] < y < sum(rules[1::2]):
         win.blit(MAIN.RULES_H, rules[:2])
+
+    if table[0] < x < sum(table[::2]) and table[1] < y < sum(table[1::2]):
+        win.blit(MAIN.TABLE_H, table[:2])
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -115,6 +120,10 @@ while run:
             elif rules[0] < x < sum(rules[::2]) and rules[1] < y < sum(rules[1::2]):
                 sound.play_click(prefs)
                 run = menus.rules(win)
+
+            elif table[0] < x < sum(table[::2]) and table[1] < y < sum(table[1::2]):
+                sound.play_click(prefs)
+                run = menus.table(win)
 
     pygame.display.flip()
 

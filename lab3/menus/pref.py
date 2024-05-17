@@ -17,14 +17,14 @@ DEFAULTPREFS = {
 
 def save(load):
     with open(os.path.join("res", "preferences.json"), "w") as f:
-        json.dump(load, f)
+        json.dump(load, f, indent=2)
 
 
 def load():
     path = os.path.join("res", "preferences.json")
     if not os.path.exists(path):
         with open(path, "w") as f:
-            json.dump(DEFAULTPREFS, f)
+            json.dump(DEFAULTPREFS, f, indent=2)
 
     with open(path, "r") as f:
         mydict = json.load(f)

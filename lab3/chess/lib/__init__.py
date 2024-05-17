@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from chess.lib.core import (
     getType,
     isOccupied,
@@ -30,6 +32,8 @@ from chess.lib.utils import (
     saveGame,
 )
 from chess.lib.ai import miniMax
+from menus.table import TABLE
+from tools.utils import rounded_rect
 
 
 def convertMoves(moves):
@@ -122,7 +126,7 @@ def animate(win, side, board, fro, to, load, player=None):
     sound.play_move(load)
 
 
-def showScreen(win, side, board, flags, pos, load, player=None):
+def showScreen(win, side, board, flags, pos, load, player=None, moves=None):
     """
     This is a compilation of all gui functions. This handles the display of the
     screen when chess gameplay takes place. This tool needs to be called
@@ -151,6 +155,18 @@ def showScreen(win, side, board, flags, pos, load, player=None):
             win.blit(CHESS.CHECKMATE, (100, 12))
             win.blit(CHESS.LOST, (320, 12))
             win.blit(CHESS.PIECES[side]["k"], (270, 0))
+            #########
+            if moves:
+                table = TABLE()
+                records: dict = table.DEFAULTTABLE
+                records[str(moves)] = datetime.now().strftime("%d.%m.%Y")
+
+                if str(moves) == min(records, key=lambda x: int(x)):
+                    rounded_rect(win, (255, 255, 255), (110, 160, 280, 130), 4, 4)
+                    win.blit(TABLE.PROMPT, (130, 165))
+
+                table.save(dict(sorted(records.items(), key=lambda item: int(item[0]))))
+
         else:
             win.blit(CHESS.STALEMATE, (160, 12))
     else:
